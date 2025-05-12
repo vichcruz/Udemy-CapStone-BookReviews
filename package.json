@@ -1,0 +1,21 @@
+{
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "express": "^5.1.0",
+    "pg": "^8.15.6"
+  },
+  "name": "udemy-capstone-bookreviews",
+  "version": "1.0.0",
+  "description": "Capstone Project for Udemy Full-Stack WebDev Course",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "Udemy-CapStone-BookReviews"
+  },
+  "author": "vichcruz",
+  "license": "ISC",
+  "type": "module"
+}
