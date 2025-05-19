@@ -220,8 +220,11 @@ app.delete("/chapters/:chapterId", async (req, res) => {
     }
 });
 
-app.listen(port, (req, res) => {
+// home route
+app.get("/", (req, res) => {
+    res.render("overview");
+});
+
+app.listen(port, () => {
     console.log(`Server is running on port ${port}...`);
-    // res.render("overview.ejs");
-    // TODO: fix Typerror reading undefined (render)
 });
