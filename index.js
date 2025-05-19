@@ -21,6 +21,7 @@ const app = express();
 const port = 3000;
 
 app.use(bodyParser.json());
+app.set("view engine", "ejs");
 
 
 // post route to create a book
@@ -134,8 +135,93 @@ app.post("/notes/:bookId", async (req, res) => {
 });
 
 // get route to get all notes from a book instance
-// TODO
+app.get("/notes/:bookId", async (req, res) => {
+    try {
+        const result = await db.query("select * from notes where book_id = $1", [req.params.bookId]);
+        res.status(200).send(result.rows);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("There was an error while fetching the notes.");
+    }
+});
 
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}...`)
+// patch route to update specific note
+app.patch("/notes/:noteId", async (req, res) => {
+    try {
+        const oldResponse = await db.query("select * from notes where id = $1", [req.params.noteId]);
+        const oldNote = oldResponse.rows[0];
+
+        let text = req.body.text ? req.body.text : oldNote.text;
+
+        const result = await db.query("update notes set text = $1 where id = $2", [text, req.params.noteId]);
+
+        res.status(200).send("Note edited successfully!");
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("An error occurred while updating note.")
+    }
+});
+
+// delete route for note
+app.delete("/notes/:noteId", async (req, res) => {
+    try {
+        await db.query("delete from notes where id = $1", [req.params.noteId]);
+
+        res.status(200).send("Note deleted successfully!");
+    } catch (error) {
+        res.status(500).send("An error occurred while deleting note.");
+    }
+});
+
+// get route to retrieve all chapters of a book
+app.get("/chapters/:bookId", async (req, res) => {
+    try {
+        const response = await db.query("select * from chapters where book_id = $1", [req.params.bookId]);
+        res.status(200).send(response.rows);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("An error occurred while fetching chapters.");
+    }
+});
+
+// post route to create chapter
+app.post("/chapters/:bookId", async (req, res) => {
+    try {
+        const title = req.body.title;
+        const posInBook = req.body.posInBook;
+
+        // create chapter instance and then return id
+        const response = await db.query("insert into chapters (position_in_book, title, book_id) values ($1, $2, $3) returning id", [posInBook, title, req.params.bookId]);
+
+        res.status(200).send(response.rows[0].id);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Error occurred while creating chapter.");
+    }
+});
+
+// delete route for chapters
+app.delete("/chapters/:chapterId", async (req, res) => {
+    try {
+        const response = await db.query("select * from chapters where id = $1", [req.params.chapterId]);
+
+        // first check whether that chapter exists
+        // otherwise no error will be thrown even if chapter doesn't exist
+        if (response.rows.length === 0) {
+            res.status(404).send("Chapter not found.");
+        }
+
+        await db.query("delete from chapters where id = $1", [req.params.chapterId]);
+
+        res.status(200).send("Chapter deleted successfully!");
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Error occurred while deleting chapter.");
+    }
+});
+
+app.listen(port, (req, res) => {
+    console.log(`Server is running on port ${port}...`);
+    // res.render("overview.ejs");
+    // TODO: fix Typerror reading undefined (render)
 });
