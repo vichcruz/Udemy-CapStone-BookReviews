@@ -1,16 +1,22 @@
 {
   "dependencies": {
+    "@tailwindcss/postcss": "^4.1.7",
     "body-parser": "^2.2.0",
+    "concurrently": "^9.1.2",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
-    "pg": "^8.15.6"
+    "pg": "^8.15.6",
+    "postcss": "^8.5.3",
+    "postcss-cli": "^11.0.1",
+    "tailwindcss": "^4.1.7"
   },
   "name": "udemy-capstone-bookreviews",
   "version": "1.0.0",
   "description": "Capstone Project for Udemy Full-Stack WebDev Course",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently \"postcss src/css/styles.css -o public/css/styles.css --watch\" \"nodemon index.js\""
   },
   "repository": {
     "type": "git",

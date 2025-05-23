@@ -22,6 +22,7 @@ const port = 3000;
 
 app.use(bodyParser.json());
 app.set("view engine", "ejs");
+app.use(express.static("public"))
 
 
 // post route to create a book
