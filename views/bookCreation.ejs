@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Creation</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body class="body-container">
+    <%- include('partials/header.ejs') %>
+    <h1 class="h1">Add a new Book</h1>
+    <form action="/book" method="post" class="form-container">
+        <div class="flex flex-col gap-4">
+            <label for="book-title" class="form-label">Book Title</label>
+            <input type="text" name="Book Title" id="book-title" class="form-input" placeholder="Write down the title of the book here" required>
+        </div>
+        <div class="flex flex-col gap-4">
+            <label for="book-review" class="form-label">Review</label>
+            <input type="text" name="book-review" id="book-review" class="form-input" placeholder="Write down your review here" required>
+        </div>
+        <div class="flex flex-col gap-4">
+            <label for="book-rating" class="form-label">Rating</label>
+            <input type="range" name="book-rating" id="book-rating" min="1" max="5" oninput="this.nextElementSibling.value = this.value">
+            <output>3</output>
+        </div>
+        <div class="flex flex-col gap-4">
+            <label for="book-dateRead" class="form-label">Date Read</label>
+            <input type="date" name="book-dateRead" id="book-dateRead">
+        </div>
+        <div class="flex flex-col gap-4" id="chapter-container">
+            <label for="book-chapters" class="form-label">Chapters</label>
+            <div id="chapter-input">
+                <input type="text" name="chapters[]" placeholder="Chapter 1 Title" class="form-input w-full">
+            </div>
+        </div>
+        <button type="button" onclick="addChapter()" class="alert-button place-self-center">Add Chapter</button>
+        <button type="submit" class="primary-button">Create Book</button>
+    </form>
+</body>
+<script>
+  function addChapter() {
+    const container = document.getElementById("chapter-container");
+    const chapterCount = container.querySelectorAll("input").length;
+    
+    const div = document.createElement("div");
+    div.className = "chapter-input";
+    div.innerHTML = `<input type="text" class = "form-input w-full" name="chapters[]" placeholder="Chapter ${chapterCount + 1} Title">`;
+
+    container.appendChild(div);
+  }
+</script>
+</html>

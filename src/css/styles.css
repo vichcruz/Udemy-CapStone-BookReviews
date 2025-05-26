@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+/* overall site look */
+
+.body-container {
+    @apply px-30 py-15 bg-[#f5f5f5] flex flex-col place-content-center gap-10;
+}
+
 /* Buttons + searchbar */
 .secondary-button {
     @apply bg-[#a29f15] rounded-2xl p-4 text-xl text-white cursor-pointer;
@@ -20,7 +26,7 @@
 /* headings */
 
 .h1 {
-    @apply text-6xl font-bold py-5
+    @apply text-6xl font-bold py-5 text-center
 }
 
 .h3 {
@@ -35,4 +41,18 @@
 
 .book-card-content {
     @apply flex flex-col gap-4
+}
+
+/* forms */
+
+.form-container {
+    @apply flex flex-col gap-8
+}
+
+.form-label {
+    @apply text-2xl font-semibold
+}
+
+.form-input {
+    @apply bg-white rounded-xl px-5 py-3 text-xl
 }

@@ -25,6 +25,15 @@ app.set("view engine", "ejs");
 app.use(express.static("public"))
 
 
+// get route to render book creation page
+app.get("/add-book", (_, res) => {
+    res.render('bookCreation.ejs', {
+        showOrderButton: false,
+        showSearchBar: false,
+        showAddBookButton: false
+    });
+});
+
 // post route to create a book
 app.post("/books", async (req, res) => {
     try {
@@ -223,7 +232,11 @@ app.delete("/chapters/:chapterId", async (req, res) => {
 
 // home route
 app.get("/", (req, res) => {
-    res.render("overview");
+    res.render("overview", {
+        showOrderButton: true,
+        showSearchBar: true,
+        showAddBookButton: true
+    });
 });
 
 app.listen(port, () => {

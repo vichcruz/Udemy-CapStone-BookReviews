@@ -1,7 +1,13 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0&icon_names=arrow_drop_down" />
 <div class="flex flex-row gap-15 items-center">
-    <button class="secondary-button">Home</button>
+    <a class="secondary-button" href="/">Home</a>
+    <% if (showOrderButton) { %>
     <p class="text-xl rounded-2xl bg-white p-2 cursor-pointer">Order by <span class="material-symbols-outlined align-middle">arrow_drop_down</span></p>
+    <% } %>
+    <% if (showSearchBar) { %>
     <form action="" class="searchbar">Search</form>
-    <button class="primary-button">Add Book</button>
+    <% } %>
+    <% if (showAddBookButton) { %>
+    <a class="primary-button" href="/add-book">Add Book</a>
+    <% } %>
 </div>
