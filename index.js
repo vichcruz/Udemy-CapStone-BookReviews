@@ -34,6 +34,24 @@ app.get("/add-book", (_, res) => {
     });
 });
 
+// get route to render book detail page
+app.get("/book-detail", (_, res) => {
+    res.render('bookDetailView.ejs', {
+        showAddBookButton: false,
+        showOrderButton: false,
+        showSearchBar: false
+    });
+});
+
+// get route to render note creation page
+app.get("/add-note", (_, res) => {
+    res.render('noteCreation.ejs', {
+        showAddBookButton: false,
+        showOrderButton: false,
+        showSearchBar: false
+    });
+});
+
 // post route to create a book
 app.post("/books", async (req, res) => {
     try {

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Note Creation View</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0&icon_names=arrow_drop_down" />
+</head>
+<body class="body-container">
+    <%- include('partials/header.ejs') %>
+    <h1 class="h1 text-center">Add a new Note</h1>
+    <form action="/notes/:bookId" method="post" class="form-container">
+        <label for="note-text" class="form-label">Note Text</label>
+        <input name="note-text" id="note-text" class="form-input" placeholder="Write your note here"></input>
+        <div class="dropdown">
+            <button type='button' onclick="toggleDropdown()" class="dropbtn rounded-xl font-bold" id="dropdownButton">Chapter <span class="material-symbols-outlined align-middle">arrow_drop_down</span></button>
+            <div id="myDropdown" class="dropdown-content hidden">
+                <p>Chapter 1</p>
+                <p>Chapter 2</p>
+                <p>Chapter 3</p>
+            </div>
+        </div>
+        <button type="submit" class="primary-button">Save</button>
+    </form>
+</body>
+<script>
+    // toggle between hiding and showing content when pressing button
+    function toggleDropdown() {
+        document.getElementById("myDropdown").classList.toggle("hidden");
+        document.getElementById("myDropdown").classList.toggle("block");
+        document.getElementById("dropdownButton").classList.toggle("rounded-xl");
+        document.getElementById("dropdownButton").classList.toggle("rounded-t-xl");
+    }
+
+    // close dropdown menu if user clicks outside of it
+    window.onclick = function(event) {
+        if (!event.target.matches('.dropbtn')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+</script>
+</html>

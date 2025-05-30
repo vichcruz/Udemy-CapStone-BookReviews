@@ -1,8 +1,16 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0&icon_names=arrow_drop_down" />
+<link rel="stylesheet" href="/css/styles.css">
 <div class="flex flex-row gap-15 items-center">
     <a class="secondary-button" href="/">Home</a>
     <% if (showOrderButton) { %>
-    <p class="text-xl rounded-2xl bg-white p-2 cursor-pointer">Order by <span class="material-symbols-outlined align-middle">arrow_drop_down</span></p>
+        <div class="dropdown">
+           <button type='button' onclick="toggleDropdown()" class="dropbtn rounded-xl" id="dropdownButton">Order by <span class="material-symbols-outlined align-middle">arrow_drop_down</span></button>
+           <div id="myDropdown" class="dropdown-content hidden">
+               <p>Rating</p>
+               <p>Date Read</p>
+               <p>Title</p>
+           </div>
+       </div>
     <% } %>
     <% if (showSearchBar) { %>
     <form action="" class="searchbar">Search</form>
@@ -11,3 +19,27 @@
     <a class="primary-button" href="/add-book">Add Book</a>
     <% } %>
 </div>
+
+<script>
+    // toggle between hiding and showing content when pressing button
+    function toggleDropdown() {
+        document.getElementById("myDropdown").classList.toggle("hidden");
+        document.getElementById("myDropdown").classList.toggle("block");
+        document.getElementById("dropdownButton").classList.toggle("rounded-xl");
+        document.getElementById("dropdownButton").classList.toggle("rounded-t-xl");
+    }
+
+    // close dropdown menu if user clicks outside of it
+    window.onclick = function(event) {
+        if (!event.target.matches('.dropbtn')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+</script>
