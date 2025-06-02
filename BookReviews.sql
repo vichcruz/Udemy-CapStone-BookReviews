@@ -4,7 +4,8 @@ CREATE TABLE "books" (
   "author_lastname" varchar(50) NOT NULL,
   "review" varchar NOT NULL,
   "rating" integer NOT NULL,
-  "date_read" datetime NOT NULL
+  "date_read" datetime NOT NULL,
+  "isbn" varchar NOT NULL
 );
 
 CREATE TABLE "chapters" (
