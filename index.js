@@ -77,19 +77,6 @@ app.post("/books", async (req, res) => {
     }
 });
 
-// get route to get all books
-app.get("/books", async (_, res) => {
-    try {
-        const response = await db.query("select * from books");
-        console.log(response.rows);
-        res.status(200)
-        .send(response.rows);
-    } catch (error) {
-        console.log(error);
-        res.status(500).send("Error while fetching books.");
-    }
-});
-
 // get a specific book using id
 app.get("/books/:id", async (req, res) => {
     try {
@@ -258,12 +245,21 @@ app.delete("/chapters/:chapterId", async (req, res) => {
 });
 
 // home route
-app.get("/", (req, res) => {
-    res.render("overview", {
-        showOrderButton: true,
-        showSearchBar: true,
-        showAddBookButton: true
-    });
+app.get("/", async (_, res) => {
+    try {
+        const response = await db.query("select * from books");
+        console.log(response.rows);
+        res.status(200)
+        .render("overview", {
+            showOrderButton: true,
+            showSearchBar: true,
+            showAddBookButton: true,
+            allBooks: response.rows
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Error while fetching books.");
+    }
 });
 
 app.listen(port, () => {
