@@ -52,6 +52,15 @@ app.get("/add-note", (_, res) => {
     });
 });
 
+// get route to render edit book page
+app.get("/edit-book", (_, res) => {
+    res.render('editBook.ejs', {
+        showAddBookButton: false,
+        showOrderButton: false,
+        showSearchBar: false
+    });
+});
+
 // post route to create a book
 app.post("/books", async (req, res) => {
     try {
