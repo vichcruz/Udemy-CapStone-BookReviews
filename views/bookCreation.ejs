@@ -10,28 +10,36 @@
     <%- include('partials/header.ejs') %>
     <!-- TODO: Add field for isbn number for book cover -->
     <h1 class="h1">Add a new Book</h1>
-    <form action="/book" method="post" class="form-container">
+    <form action="/books" method="post" class="form-container">
         <div class="flex flex-col gap-4">
-            <label for="book-title" class="form-label">Book Title</label>
-            <input type="text" name="Book Title" id="book-title" class="form-input" placeholder="Write down the title of the book here" required>
+            <label for="title" class="form-label">Book Title</label>
+            <input type="text" name="title" id="title" class="form-input" placeholder="Write down the title of the book here" required>
         </div>
         <div class="flex flex-col gap-4">
-            <label for="book-review" class="form-label">Review</label>
-            <input type="text" name="book-review" id="book-review" class="form-input" placeholder="Write down your review here" required>
+            <label for="author" class="form-label">Author</label>
+            <input type="text" name="author" id="author" class="form-input" placeholder="Write down the last name of the author of the book here" required>
         </div>
         <div class="flex flex-col gap-4">
-            <label for="book-rating" class="form-label">Rating</label>
-            <input type="range" name="book-rating" id="book-rating" min="1" max="10" oninput="this.nextElementSibling.value = this.value">
+            <label for="isbn" class="form-label">ISBN Number</label>
+            <input type="number" name="isbn" id="isbn" class="form-input" placeholder="Write down the isbn of your book here" required>
+        </div>
+        <div class="flex flex-col gap-4">
+            <label for="review" class="form-label">Review</label>
+            <input type="text" name="review" id="review" class="form-input" placeholder="Write down your review here" required>
+        </div>
+        <div class="flex flex-col gap-4">
+            <label for="rating" class="form-label">Rating</label>
+            <input type="range" name="rating" id="rating" min="1" max="10" oninput="this.nextElementSibling.value = this.value">
             <output>6</output>
         </div>
         <div class="flex flex-col gap-4">
-            <label for="book-dateRead" class="form-label">Date Read</label>
-            <input type="date" name="book-dateRead" id="book-dateRead">
+            <label for="dateRead" class="form-label">Date Read</label>
+            <input type="date" name="dateRead" id="dateRead">
         </div>
         <div class="flex flex-col gap-4" id="chapter-container">
-            <label for="book-chapters" class="form-label">Chapters</label>
+            <label for="chapters" class="form-label">Chapters</label>
             <div id="chapter-input">
-                <input type="text" name="chapters[]" placeholder="Chapter 1 Title" class="form-input w-full">
+                <input type="text" name="chapters" id="chapters" placeholder="Chapter 1 Title" class="form-input w-full" required>
             </div>
         </div>
         <button type="button" onclick="addChapter()" class="alert-button place-self-center">Add Chapter</button>

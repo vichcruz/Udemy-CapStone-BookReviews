@@ -364,6 +364,12 @@
   font-size: var(--text-xl);
   line-height: var(--tw-leading, var(--text-xl--line-height));
 }
+.selector {
+  width: fit-content;
+  border-radius: var(--radius-xl);
+  background-color: var(--color-white);
+  padding: calc(var(--spacing) * 3);
+}
 .dropdown {
   position: relative;
   display: inline-block;

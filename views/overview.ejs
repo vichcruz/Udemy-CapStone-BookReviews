@@ -29,7 +29,7 @@
                         <p>Rating: <%= book.rating %></p>
                     </div>
                     <p><%= book.review %></p>
-                    <a class="alert-button w-fit" href="/book-detail">Look at my Notes</a>
+                    <a class="alert-button w-fit" href="/book-detail/<%= book.id %>">Look at my Notes</a>
                 </div>
             </div>
         <% }); %>

@@ -1,6 +1,7 @@
 import express from 'express';
 import { Client } from 'pg';
 import bodyParser from 'body-parser';
+import methodOverride from 'method-override';
 
 const db = new Client({
     user: "postgres",
@@ -20,7 +21,9 @@ try {
 const app = express();
 const port = 3000;
 
+app.use(methodOverride('_method'));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.use(express.static("public"))
 
@@ -35,30 +38,67 @@ app.get("/add-book", (_, res) => {
 });
 
 // get route to render book detail page
-app.get("/book-detail", (_, res) => {
-    res.render('bookDetailView.ejs', {
-        showAddBookButton: false,
-        showOrderButton: false,
-        showSearchBar: false
-    });
+app.get("/book-detail/:id", async (req, res) => {
+    try {
+        const response = await db.query("select * from books where id = $1", [req.params.id]);
+
+        // check whether list of books is empty, i.e. no book was found
+        if (response.rows.length == 0) {
+            throw new Error("No book found.")
+        }
+
+        const notes = await db.query("select * from notes where book_id = $1 order by created_at", [req.params.id]);
+        console.log(notes.rows);
+
+        const chapters = await db.query("select * from chapters where book_id = $1 order by position_in_book", [req.params.id]);
+        console.log(chapters.rows);
+
+        res.status(200)
+            .render('bookDetailView.ejs', {
+                showAddBookButton: false,
+                showOrderButton: false,
+                showSearchBar: false,
+                bookDetail: response.rows[0],
+                notes: notes.rows,
+                chapters: chapters.rows
+            });
+    } catch (error) {
+        console.log(error);
+        res.status(404).send(`Book with id ${req.params.id} not found.`);
+    }
 });
 
 // get route to render note creation page
-app.get("/add-note", (_, res) => {
-    res.render('noteCreation.ejs', {
-        showAddBookButton: false,
-        showOrderButton: false,
-        showSearchBar: false
-    });
+app.get("/add-note/:bookId", async (req, res) => {
+    try {
+        const result = await db.query(`select * from chapters where book_id = ${req.params.bookId} order by position_in_book`);
+        res.render('noteCreation.ejs', {
+            showAddBookButton: false,
+            showOrderButton: false,
+            showSearchBar: false,
+            chapters: result.rows,
+            bookId: parseInt(req.params.bookId, 10)
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Error while rendering note creation page.')
+    }
 });
 
 // get route to render edit book page
-app.get("/edit-book", (_, res) => {
-    res.render('editBook.ejs', {
-        showAddBookButton: false,
-        showOrderButton: false,
-        showSearchBar: false
-    });
+app.get("/edit-book/:bookId", async (req, res) => {
+    try {
+        const response = await db.query("select * from books where id = $1", [req.params.bookId]);
+        res.render('editBook.ejs', {
+            showAddBookButton: false,
+            showOrderButton: false,
+            showSearchBar: false,
+            book: response.rows[0]
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("An error occurred while redering book edit page.");
+    }
 });
 
 // post route to create a book
@@ -68,33 +108,27 @@ app.post("/books", async (req, res) => {
         let review = req.body.review;
         let rating = req.body.rating;
         let dateRead= new Date(req.body.dateRead);
-        let authorLastName = req.body.authorLastName;
-        await db.query("insert into books (title, review, rating, date_read, author_lastname) values ($1, $2, $3, $4, $5);", [title, review, rating, dateRead,  authorLastName]);
-        res.status(200).send("Book created successfully!");
+        let authorLastName = req.body.author;
+        let isbn = req.body.isbn;
+        console.log(req.body);
+        
+        const newBook = await db.query("insert into books (title, review, rating, date_read, author_lastname, isbn) values ($1, $2, $3, $4, $5, $6) returning id;", [title, review, rating, dateRead,  authorLastName, isbn]);
+
+        let position = 1;
+        for (const chapter of req.body.chapters) {
+            await db.query("insert into chapters (position_in_book, title, book_id) values ($1, $2, $3);", [position, chapter, newBook.rows[0].id]);
+            position++;
+        };
+
+        res.status(200).redirect('/')
     } catch (error) {
-        console.error("Error creating book:", error.detail);
+        console.error("Error creating book:", error);
         res.status(500).send("An error occurred while creating the book.");
     }
 });
 
-// get a specific book using id
-app.get("/books/:id", async (req, res) => {
-    try {
-        const response = await db.query("select * from books where id = $1", [req.params.id]);
-
-        // check whether list of books is empty, i.e. no book was found
-        if (response.rows.length == 0) {
-            throw new Error("No book found.")
-        }
-        res.status(200).send(response.rows[0]);
-    } catch (error) {
-        console.log(error);
-        res.status(404).send(`Book with id ${req.params.id} not found.`);
-    }
-});
-
 // update a specific book instance
-app.patch("/books/:id", async (req, res) => {
+app.put("/books/:id", async (req, res) => {
     try {
         const oldReponse = await db.query("select * from books where id = $1", [req.params.id]);
         const oldBook = oldReponse.rows[0];
@@ -119,10 +153,10 @@ app.patch("/books/:id", async (req, res) => {
             authorLastName ? authorLastName : oldBook.author_lastname,
             req.params.id
         ]);
-        res.status(200).send("Book edited successfully!");
+        res.status(200).redirect(`/book-detail/${req.params.id}`);
     } catch (error) {
         console.log(error);
-        res.status(500).send("Error editing book instance.")
+        res.status(500).send("Error editing book instance.");
     }
 });
 
@@ -149,23 +183,12 @@ app.delete("/books/:id", async (req, res) => {
 app.post("/notes/:bookId", async (req, res) => {
     try {
         let text = req.body.text;
-        let chapterId = req.body.chapterId;
+        let chapterId = req.body.chapter;
         await db.query("insert into notes (text, book_id, chapter_id, created_at) values ($1, $2, $3, $4)", [text, req.params.bookId, chapterId, new Date()]);
-        res.status(200).send("Note created successfully!");
+        res.status(200).redirect(`/book-detail/${req.params.bookId}`);
     } catch (error) {
         console.log(error);
         res.status(500).send("Error while creating a new note.");
-    }
-});
-
-// get route to get all notes from a book instance
-app.get("/notes/:bookId", async (req, res) => {
-    try {
-        const result = await db.query("select * from notes where book_id = $1", [req.params.bookId]);
-        res.status(200).send(result.rows);
-    } catch (error) {
-        console.log(error);
-        res.status(500).send("There was an error while fetching the notes.");
     }
 });
 
@@ -194,33 +217,6 @@ app.delete("/notes/:noteId", async (req, res) => {
         res.status(200).send("Note deleted successfully!");
     } catch (error) {
         res.status(500).send("An error occurred while deleting note.");
-    }
-});
-
-// get route to retrieve all chapters of a book
-app.get("/chapters/:bookId", async (req, res) => {
-    try {
-        const response = await db.query("select * from chapters where book_id = $1", [req.params.bookId]);
-        res.status(200).send(response.rows);
-    } catch (error) {
-        console.log(error);
-        res.status(500).send("An error occurred while fetching chapters.");
-    }
-});
-
-// post route to create chapter
-app.post("/chapters/:bookId", async (req, res) => {
-    try {
-        const title = req.body.title;
-        const posInBook = req.body.posInBook;
-
-        // create chapter instance and then return id
-        const response = await db.query("insert into chapters (position_in_book, title, book_id) values ($1, $2, $3) returning id", [posInBook, title, req.params.bookId]);
-
-        res.status(200).send(response.rows[0].id);
-    } catch (error) {
-        console.log(error);
-        res.status(500).send("Error occurred while creating chapter.");
     }
 });
 
