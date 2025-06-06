@@ -3,86 +3,94 @@
 /* overall site look */
 
 .body-container {
-    @apply px-30 py-15 bg-[#f5f5f5] flex flex-col gap-10;
+  @apply px-30 py-15 bg-[#f5f5f5] flex flex-col gap-10;
 }
 
 /* Buttons + searchbar */
 .secondary-button {
-    @apply bg-[#a29f15] rounded-2xl p-4 text-xl text-white cursor-pointer;
+  @apply bg-[#a29f15] rounded-2xl p-4 text-xl text-white cursor-pointer;
 }
 
 .primary-button {
-    @apply bg-[#14342b] rounded-2xl p-4 text-xl text-white cursor-pointer;
+  @apply bg-[#14342b] rounded-2xl p-4 text-xl text-white cursor-pointer;
 }
 
 .alert-button {
-    @apply bg-[#510D0A] rounded-2xl p-4 text-xl text-white cursor-pointer;
+  @apply bg-[#510D0A] rounded-2xl p-4 text-xl text-white cursor-pointer;
 }
 
 .searchbar {
-    @apply p-4 bg-white text-gray-400 rounded-xl min-w-25;
+  @apply p-2 bg-white text-gray-400 rounded-xl w-fit;
+}
+
+.search-input {
+  @apply px-3 py-2 w-fit;
 }
 
 /* headings */
 
 .h1 {
-    @apply text-6xl font-bold py-5 text-center
+  @apply text-6xl font-bold py-5 text-center;
 }
 
 .h2 {
-    @apply text-4xl font-bold
+  @apply text-4xl font-bold;
 }
 
 .h3 {
-    @apply text-2xl font-bold
+  @apply text-2xl font-bold;
 }
 
 .h4 {
-    @apply text-2xl
+  @apply text-2xl;
 }
 
 /* boook cards */
 
 .book-card-container {
-    @apply bg-white p-4 flex flex-row gap-4 rounded-2xl
+  @apply bg-white p-4 flex flex-row gap-4 rounded-2xl;
 }
 
 .book-card-content {
-    @apply flex flex-col gap-4
+  @apply flex flex-col gap-4;
+}
+
+.book-cover {
+  @apply w-40 h-60 rounded-xl;
 }
 
 /* forms */
 
 .form-container {
-    @apply flex flex-col gap-8
+  @apply flex flex-col gap-8;
 }
 
 .form-label {
-    @apply text-2xl font-semibold
+  @apply text-2xl font-semibold;
 }
 
 .form-input {
-    @apply bg-white rounded-xl px-5 py-3 text-xl
+  @apply bg-white rounded-xl px-5 py-3 text-xl;
 }
 
 .selector {
-    @apply bg-white p-3 rounded-xl w-fit
+  @apply bg-white p-3 rounded-xl w-fit;
 }
 
 /* Dropdown Menu */
 
 .dropdown {
-    @apply relative inline-block w-fit
+  @apply relative inline-block w-fit;
 }
 
 .dropdown-content {
-    @apply absolute p-3 bg-white w-full rounded-b-xl
+  @apply absolute p-3 bg-white w-full rounded-b-xl;
 }
 
 .dropdown-content p {
-    @apply block
+  @apply block;
 }
 
 .dropbtn {
-    @apply bg-white p-3 cursor-pointer min-w-30
+  @apply bg-white p-3 cursor-pointer min-w-30;
 }

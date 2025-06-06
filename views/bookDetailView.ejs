@@ -1,44 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Detail View</title>
     <link rel="stylesheet" href="/css/styles.css">
 </head>
+
 <body class="body-container">
     <%- include('partials/header.ejs') %>
-    <h1 class="h1 text-center"><%= bookDetail.title %></h1>
-    <div class="flex flex-row gap-5 self-center">
-        <img src='https://covers.openlibrary.org/b/isbn/<%= bookDetail.isbn %>-M.jpg' alt="Book Cover">
-        <div class="flex flex-col gap-2">
-            <p>ISBN: <%= bookDetail.isbn %></p>
-            <% 
-                const date = new Date(bookDetail.date_read);
-                const day = String(date.getDate()).padStart(2, '0');
-                const month = String(date.getMonth() + 1).padStart(2, '0');
-                const year = date.getFullYear();
-                const formattedDate = `${day}/${month}/${year}`
-            %>
-            <p>Date Read: <%= formattedDate %></p>
-            <p>Rating: <%= bookDetail.rating %></p>
+        <h1 class="h1 text-center">
+            <%= bookDetail.title %>
+        </h1>
+        <div class="flex flex-row gap-5 self-center">
+            <img src='https://covers.openlibrary.org/b/isbn/<%= bookDetail.isbn %>-M.jpg' alt="Book Cover"
+                class="book-cover">
+            <div class="flex flex-col gap-2">
+                <p>ISBN: <%= bookDetail.isbn %>
+                </p>
+                <% const date=new Date(bookDetail.date_read); const day=String(date.getDate()).padStart(2, '0' ); const
+                    month=String(date.getMonth() + 1).padStart(2, '0' ); const year=date.getFullYear(); const
+                    formattedDate=`${day}/${month}/${year}` %>
+                    <p>Date Read: <%= formattedDate %>
+                    </p>
+                    <p>Rating: <%= bookDetail.rating %>
+                    </p>
+            </div>
         </div>
-    </div>
-    <p class="text-justify"><%= bookDetail.review %></p>
-    <h2 class="h2">Notes</h2>
-    <% chapters.forEach(chapter => { %>
-        <div class="flex flex-col gap-3">
-            <h4 class="h4">Chapter <%= chapter.position_in_book %>: <%= chapter.title %></h4>
-            <% notes.forEach(note => { 
-                if (note.chapter_id == chapter.id) { %>
-                    <p class="text-justify"><%= note.text %></p>
-                <% } %>
+        <p class="text-justify">
+            <%= bookDetail.review %>
+        </p>
+        <h2 class="h2">Notes</h2>
+        <% chapters.forEach(chapter=> { %>
+            <div class="flex flex-col gap-3">
+                <h4 class="h4">Chapter <%= chapter.position_in_book %>: <%= chapter.title %>
+                </h4>
+                <% notes.forEach(note=> {
+                    if (note.chapter_id == chapter.id) { %>
+                    <p class="text-justify">
+                        <%= note.text %>
+                    </p>
+                    <% } %>
+                        <% }); %>
+            </div>
             <% }); %>
-        </div>
-        <% }); %>
-        <div class="flex flex-row gap-30 justify-center">
-            <a href="/add-note/<%= bookDetail.id %>" class="secondary-button">Add Note</a>
-            <a href="/edit-book/<%= bookDetail.id %>" class="alert-button">Edit Book</a>
-        </div>
+                <div class="flex flex-row gap-30 justify-center">
+                    <a href="/add-note/<%= bookDetail.id %>" class="secondary-button">Add Note</a>
+                    <a href="/edit-book/<%= bookDetail.id %>" class="alert-button">Edit Book</a>
+                </div>
 </body>
+
 </html>

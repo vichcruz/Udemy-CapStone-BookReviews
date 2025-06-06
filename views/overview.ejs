@@ -1,37 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Overview</title>
-        <link rel="stylesheet" href="/css/styles.css">
-    </head>
-    <body class="body-container">
-        <%- include('partials/header.ejs') %>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Overview</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body class="body-container">
+    <%- include('partials/header.ejs') %>
         <h1 class="h1">Books I've read in this world</h1>
-        <p class="text-justify">I have not yet read many books. But the few that I have had the pleasure to read were worth my time.</p>
-        <% allBooks.forEach(book => { %>
-            <div class="book-card-container">
-                <div class="book-card-image">
-                    <img src='https://covers.openlibrary.org/b/isbn/<%= book.isbn %>-M.jpg' alt="Book cover">
-                </div>
-                <div class="book-card-content">
-                    <h3 class="h3"><%= book.title %></h3>
-                    <div class="flex flex-row gap-5 font-bold text-gray-600">
-                        <% 
-                            const date = new Date(book.date_read);
-                            const day = String(date.getDate()).padStart(2, '0');
-                            const month = String(date.getMonth() + 1).padStart(2, '0');
-                            const year = date.getFullYear();
-                            const formattedDate = `${day}/${month}/${year}`;
-                        %>
-                        <p>Date Read: <%= formattedDate %></p>
-                        <p>Rating: <%= book.rating %></p>
+        <p class="text-justify">I have not yet read many books. But the few that I have had the pleasure to read were
+            worth my time.</p>
+        <% if (allBooks && allBooks.length> 0) { %>
+            <% allBooks.forEach(book=> { %>
+                <div class="book-card-container">
+                    <div class="book-card-image">
+                        <img src='https://covers.openlibrary.org/b/isbn/<%= book.isbn %>-M.jpg' alt="Book cover"
+                            class="book-cover">
                     </div>
-                    <p><%= book.review %></p>
-                    <a class="alert-button w-fit" href="/book-detail/<%= book.id %>">Look at my Notes</a>
+                    <div class="book-card-content">
+                        <h3 class="h3">
+                            <%= book.title %>
+                        </h3>
+                        <div class="flex flex-row gap-5 font-bold text-gray-600">
+                            <% const date=new Date(book.date_read); const day=String(date.getDate()).padStart(2, '0' );
+                                const month=String(date.getMonth() + 1).padStart(2, '0' ); const
+                                year=date.getFullYear(); const formattedDate=`${day}/${month}/${year}`; %>
+                                <p>Date Read: <%= formattedDate %>
+                                </p>
+                                <p>Rating: <%= book.rating %>
+                                </p>
+                        </div>
+                        <p>
+                            <%= book.review %>
+                        </p>
+                        <a class="alert-button w-fit" href="/book-detail/<%= book.id %>">Look at my Notes</a>
+                    </div>
                 </div>
-            </div>
-        <% }); %>
-    </body>
+                <% }); } else { %>
+                    <p class="text-justify">No books found.</p>
+                    <% } %>
+</body>
+
 </html>

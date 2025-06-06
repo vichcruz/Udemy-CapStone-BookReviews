@@ -29,8 +29,8 @@ CREATE UNIQUE INDEX "UC_title_author" ON "books" ("id", "author_lastname");
 
 CREATE UNIQUE INDEX "UC_book_chapter_title" ON "chapters" ("book_id", "title");
 
-ALTER TABLE "chapters" ADD FOREIGN KEY ("book_id") REFERENCES "books" ("id");
+ALTER TABLE "chapters" ADD FOREIGN KEY ("book_id") REFERENCES "books" ("id") ON DELETE CASCADE;
 
-ALTER TABLE "notes" ADD FOREIGN KEY ("book_id") REFERENCES "books" ("id");
+ALTER TABLE "notes" ADD FOREIGN KEY ("book_id") REFERENCES "books" ("id") ON DELETE CASCADE;
 
-ALTER TABLE "notes" ADD FOREIGN KEY ("chapter_id") REFERENCES "chapters" ("id");
+ALTER TABLE "notes" ADD FOREIGN KEY ("chapter_id") REFERENCES "chapters" ("id") ON DELETE CASCADE;
