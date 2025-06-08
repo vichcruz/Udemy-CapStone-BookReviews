@@ -4,7 +4,7 @@ CREATE TABLE "books" (
   "author_lastname" varchar(50) NOT NULL,
   "review" varchar NOT NULL,
   "rating" integer NOT NULL,
-  "date_read" datetime NOT NULL,
+  "date_read" timestamp NOT NULL,
   "isbn" varchar NOT NULL
 );
 
@@ -20,7 +20,7 @@ CREATE TABLE "notes" (
   "text" varchar NOT NULL,
   "book_id" integer NOT NULL,
   "chapter_id" integer,
-  "created_at" datetime NOT NULL
+  "created_at" timestamp NOT NULL
 );
 
 CREATE UNIQUE INDEX "UC_title_position_in_book" ON "chapters" ("book_id", "position_in_book");

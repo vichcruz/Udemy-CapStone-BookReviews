@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Note View</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body class="body-container">
+  <%- include('partials/header.ejs') %>
+    <h1 class="h1 text-center">Edit Note</h1>
+    <form action="/notes/<%= note.id %>?_method=PATCH" method="post" class="form-container">
+      <label class="form-label">Note Text</label>
+      <input type="text" name="text" id="note-text" class="form-input" value="<%= note.text %>">
+      <button type="submit" class="primary-button">Save</button>
+    </form>
+</body>
+
+</html>

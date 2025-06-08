@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Detail View</title>
     <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0&icon_names=edit" />
 </head>
 
 <body class="body-container">
@@ -38,9 +40,14 @@
                 </h4>
                 <% notes.forEach(note=> {
                     if (note.chapter_id == chapter.id) { %>
-                    <p class="text-justify">
-                        <%= note.text %>
-                    </p>
+                    <div class="flex flex-row justify-between">
+                        <p class="text-justify">
+                            <%= note.text %>
+                        </p>
+                        <a href="/edit-note/<%= note.id %>" class="material-symbols-outlined cursor-pointer">
+                            edit
+                        </a>
+                    </div>
                     <% } %>
                         <% }); %>
             </div>
@@ -48,6 +55,9 @@
                 <div class="flex flex-row gap-30 justify-center">
                     <a href="/add-note/<%= bookDetail.id %>" class="secondary-button">Add Note</a>
                     <a href="/edit-book/<%= bookDetail.id %>" class="alert-button">Edit Book</a>
+                    <form action="/books/<%= bookDetail.id %>?_method=DELETE" method="post" class="form-container">
+                        <button type="submit" class="delete-button">Delete Book</button>
+                    </form>
                 </div>
 </body>
 

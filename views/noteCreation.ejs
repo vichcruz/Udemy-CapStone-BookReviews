@@ -16,7 +16,7 @@
             <input name="text" id="text" class="form-input" placeholder="Write your note here"></input>
             <select name="chapter" id="chapter" class="selector">
                 <optgroup label="chapters">
-                    <option value="">Select Chapter</option>
+                    <option value="" disabled selected>Select Chapter</option>
                     <% for (const chapter of chapters) { %>
                         <option value="<%= chapter.id %>">
                             <%= chapter.position_in_book %> - <%= chapter.title %>

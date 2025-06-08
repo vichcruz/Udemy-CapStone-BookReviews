@@ -19,6 +19,10 @@
   @apply bg-[#510D0A] rounded-2xl p-4 text-xl text-white cursor-pointer;
 }
 
+.delete-button {
+  @apply bg-[#f3b61f] rounded-2xl p-4 text-xl text-white cursor-pointer;
+}
+
 .searchbar {
   @apply p-2 bg-white text-gray-400 rounded-xl w-fit;
 }

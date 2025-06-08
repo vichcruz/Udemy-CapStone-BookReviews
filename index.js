@@ -27,6 +27,26 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 
+// get route to render note edit page
+app.get("/edit-note/:noteId", async (req, res) => {
+  try {
+    const response = await db.query("select * from notes where id = $1", [
+      req.params.noteId,
+    ]);
+    const note = response.rows[0];
+
+    res.status(200).render("editNote.ejs", {
+      showAddBookButton: false,
+      showOrderButton: false,
+      showSearchBar: false,
+      note: note,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Error while rendering note edit page.");
+  }
+});
+
 // get route to return order results
 app.get("/order", async (req, res) => {
   try {
@@ -231,7 +251,7 @@ app.delete("/books/:id", async (req, res) => {
     }
 
     await db.query("delete from books where id = $1", [req.params.id]);
-    res.status(200).send("Book deleted successfully.");
+    res.status(200).redirect("/");
   } catch (error) {
     console.log(error);
     res.status(500).send("Error while deleting book instance.");
@@ -269,7 +289,7 @@ app.patch("/notes/:noteId", async (req, res) => {
       req.params.noteId,
     ]);
 
-    res.status(200).send("Note edited successfully!");
+    res.status(200).redirect(`/book-detail/${oldNote.book_id}`);
   } catch (error) {
     console.log(error);
     res.status(500).send("An error occurred while updating note.");
